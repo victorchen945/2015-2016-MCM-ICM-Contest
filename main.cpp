@@ -1,3 +1,5 @@
+//code by Zhengyang Chen
+
 #include <iostream>
 #include<fstream>
 #include <cstdio>
@@ -8,16 +10,16 @@
 #define OK 1
 #define ERROR -1
 using namespace std;
-int arcs[32][32];//ÁÚ½Ó¾ØÕó
-int D[32];//±£´æ×î¶ÌÂ·¾¶³¤¶È
-int p[32][32];//Â·¾¶
+int arcs[32][32];//é‚»æ¥çŸ©é˜µ
+int D[32];//ä¿å­˜æœ€çŸ­è·¯å¾„é•¿åº¦
+int p[32][32];//è·¯å¾„
 int maxnum[32];//={100000000,82000000,6400000,29000000,15000000,34000000,30200000,7000000,26000000,90000000};
 int curnum[32];
 int passcost[32];//={1,2,3,2,4,2,1,3,5,2};
 int staycost[32];//={12,17,13,19,15,16,28,24,15,19};
 int policy_bugdet[32];
-int final[32];//Èôfinal[i] = 1ÔòËµÃ÷ ¶¥µãviÒÑÔÚ¼¯ºÏSÖĞ
-int n = 0;//¶¥µã¸öÊı
+int final[32];//è‹¥final[i] = 1åˆ™è¯´æ˜ é¡¶ç‚¹viå·²åœ¨é›†åˆSä¸­
+int n = 0;//é¡¶ç‚¹ä¸ªæ•°
 int v,w;
 int path_recorder[32];
 int economy[32];
@@ -81,7 +83,7 @@ int policy_calculator(int n)
         temp[i]=economy[i];
         policy_bugdet[i]=(1000+3*temp[i])*(10+policy_bugdet[i])*5/100;
 
-    }//¸ù¾İ¾­¼ÃÔö³¤Ö¸ÊıÈ·¶¨ÄÃ¶àÉÙÔ¤Ëã
+    }//æ ¹æ®ç»æµå¢é•¿æŒ‡æ•°ç¡®å®šæ‹¿å¤šå°‘é¢„ç®—
     return OK;
 }
 int staycost_calculator(int n)
@@ -94,7 +96,7 @@ int staycost_calculator(int n)
         temp[i]=staycost[i];
         staycost[i]=temp[i]*2/100+3000;
 
-    }//¸ù¾İÈË¾ùGDPÈ·¶¨Áô¾³»¨·Ñ
+    }//æ ¹æ®äººå‡GDPç¡®å®šç•™å¢ƒèŠ±è´¹
     return OK;
 }
 int passcost_calculator(int n)
@@ -107,7 +109,7 @@ int passcost_calculator(int n)
         temp[i]=passcost[i];
         passcost[i]=temp[i]*1/100;
 
-    }//¹ı¾³»¨·Ñ
+    }//è¿‡å¢ƒèŠ±è´¹
     return OK;
 }
 int gdp_calculator(int n)
@@ -312,12 +314,12 @@ void data_adjustment_print(int n)
 }
 void init_matrix(int v0)
 {
-    for (v = 0; v < n; v++) //Ñ­»· ³õÊ¼»¯
+    for (v = 0; v < n; v++) //å¾ªç¯ åˆå§‹åŒ–
      {
           final[v] = 0;
           D[v] = arcs[v0][v];
           for (w = 0; w < n; w++)
-            p[v][w] = 0;//Éè¿ÕÂ·¾¶
+            p[v][w] = 0;//è®¾ç©ºè·¯å¾„
           if (D[v] < MAX) {p[v][v0] = 1; p[v][v] = 1;}
      }
 }
@@ -495,17 +497,17 @@ int ShortestPath_DIJ(int v0,int *passby,int *settlement,int *nation_info,int n)
     int mm;
     int temp;
 
-     D[v0] = 0; final[v0]=1; //³õÊ¼»¯ v0¶¥µãÊôÓÚ¼¯ºÏS
-     //¿ªÊ¼Ö÷Ñ­»· Ã¿´ÎÇóµÃv0µ½Ä³¸ö¶¥µãvµÄ×î¶ÌÂ·¾¶ ²¢¼Óvµ½¼¯ºÏSÖĞ
+     D[v0] = 0; final[v0]=1; //åˆå§‹åŒ– v0é¡¶ç‚¹å±äºé›†åˆS
+     //å¼€å§‹ä¸»å¾ªç¯ æ¯æ¬¡æ±‚å¾—v0åˆ°æŸä¸ªé¡¶ç‚¹vçš„æœ€çŸ­è·¯å¾„ å¹¶åŠ våˆ°é›†åˆSä¸­
      for (i = 1; i < n; i++)
      {
           mm = MAX;
           for (w = 0; w < n; w++)
           {
-               if (!final[w]) //Èç¹ûw¶¥µãÔÚV-SÖĞ
+               if (!final[w]) //å¦‚æœwé¡¶ç‚¹åœ¨V-Sä¸­
                {
-                    //Õâ¸ö¹ı³Ì×îÖÕÑ¡³öµÄµã Ó¦¸ÃÊÇÑ¡³öµ±Ç°V-SÖĞÓëSÓĞ¹ØÁª±ß
-                    //ÇÒÈ¨Öµ×îĞ¡µÄ¶¥µã ÊéÉÏÃèÊöÎª µ±Ç°ÀëV0×î½üµÄµã
+                    //è¿™ä¸ªè¿‡ç¨‹æœ€ç»ˆé€‰å‡ºçš„ç‚¹ åº”è¯¥æ˜¯é€‰å‡ºå½“å‰V-Sä¸­ä¸Sæœ‰å…³è”è¾¹
+                    //ä¸”æƒå€¼æœ€å°çš„é¡¶ç‚¹ ä¹¦ä¸Šæè¿°ä¸º å½“å‰ç¦»V0æœ€è¿‘çš„ç‚¹
                     if (D[w] < mm) {
                         v = w;
                         mm = D[w];
@@ -522,7 +524,7 @@ int ShortestPath_DIJ(int v0,int *passby,int *settlement,int *nation_info,int n)
                     D[w] = mm + arcs[v][w];
                     for (k=0;k<n;k++)
                         p[w][k] = p[v][k];
-                    p[w][w] = 1; //p[w] = p[v] +¡¡[w]
+                    p[w][w] = 1; //p[w] = p[v] +ã€€[w]
                     temp=w;
                }
 
@@ -565,7 +567,7 @@ int main()
     cin>>refnum;
 
 
-    int v0 = 8;//Ô´µã
+    int v0 = 8;//æºç‚¹
     if (input_data(n)==ERROR){
         cout<<"fail to open file"<<endl;
         return -1;
